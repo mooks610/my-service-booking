@@ -1,0 +1,241 @@
+{
+  "entities": {
+    "UserAccount": {
+      "title": "UserAccount",
+      "description": "Private authenticated user profile storing workspace identity and email PII.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "displayName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "department": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "role": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "minLength": 3,
+          "maxLength": 120
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["uid", "displayName", "department", "role", "email", "createdAt", "updatedAt"]
+    },
+    "WorkspaceResource": {
+      "title": "WorkspaceResource",
+      "description": "Bookable meeting room, focus booth, or shared office equipment.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "category": {
+          "type": "string",
+          "enum": ["meeting_room", "focus_booth", "equipment"],
+          "maxLength": 32
+        },
+        "visualType": {
+          "type": "string",
+          "enum": ["boardroom", "studio", "scrum", "booth", "equipment"],
+          "maxLength": 32
+        },
+        "floor": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "zone": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "capacity": {
+          "type": "number"
+        },
+        "amenities": {
+          "type": "array",
+          "description": "Bounded list of up to 10 amenity labels."
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "operationalStatus": {
+          "type": "string",
+          "enum": ["active", "maintenance"],
+          "maxLength": 32
+        },
+        "visibility": {
+          "type": "string",
+          "enum": ["workspace"],
+          "maxLength": 32
+        },
+        "createdByUid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "name",
+        "category",
+        "visualType",
+        "floor",
+        "zone",
+        "capacity",
+        "amenities",
+        "description",
+        "operationalStatus",
+        "visibility",
+        "createdByUid",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "Booking": {
+      "title": "Booking",
+      "description": "Resource reservation record including target resource, schedule, purpose, lifecycle state, and server timestamps.",
+      "type": "object",
+      "properties": {
+        "ownerUid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "resourceId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "resourceName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "organizerName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "organizerDepartment": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "date": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 10,
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "startMin": {
+          "type": "number"
+        },
+        "endMin": {
+          "type": "number"
+        },
+        "attendeesCount": {
+          "type": "number"
+        },
+        "notes": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "checkedIn": {
+          "type": "boolean"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["confirmed", "cancelled"],
+          "maxLength": 32
+        },
+        "lifecycleStatus": {
+          "type": "string",
+          "enum": ["scheduled", "in_progress", "completed", "cancelled"],
+          "maxLength": 32
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "ownerUid",
+        "resourceId",
+        "resourceName",
+        "title",
+        "organizerName",
+        "organizerDepartment",
+        "date",
+        "startMin",
+        "endMin",
+        "attendeesCount",
+        "notes",
+        "checkedIn",
+        "status",
+        "lifecycleStatus",
+        "createdAt",
+        "updatedAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserAccount" },
+      "description": "Private user account profiles isolated to the owner or admin."
+    },
+    "/resources/{resourceId}": {
+      "schema": { "$ref": "#/entities/WorkspaceResource" },
+      "description": "Shared catalog of bookable workplace rooms, focus booths, and equipment."
+    },
+    "/bookings/{bookingId}": {
+      "schema": { "$ref": "#/entities/Booking" },
+      "description": "Persisted reservations with target resource, schedule, purpose, lifecycle state, and server timestamps."
+    }
+  }
+}

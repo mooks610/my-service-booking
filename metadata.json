@@ -1,0 +1,8 @@
+{
+  "name": "리소스 허브 (Resource Hub)",
+  "description": "회의실, 포커스 부스 및 공용 자산을 실시간으로 조회하고 원클릭으로 예약하는 엔터프라이즈 워크플레이스 리소스 허브",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
