@@ -74,7 +74,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
           className="h-10 px-4 rounded-lg bg-[#0D9488] hover:bg-[#0F766E] active:bg-[#115E59] text-[#FFFFFF] text-sm font-semibold inline-flex items-center gap-1.5 transition-colors whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0D9488] focus-visible:ring-offset-2"
         >
           <Plus className="w-4 h-4 shrink-0" />
-          <span>빠른 예약</span>
+          <span className="text-[20px]">빠른 예약</span>
         </button>
       </div>
     </header>
